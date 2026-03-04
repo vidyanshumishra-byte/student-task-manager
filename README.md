@@ -7,7 +7,7 @@ A simple console-based task management system built using Python.
 - View tasks
 - Simple menu-driven interface
 
---> 🛠 Tech Stack
+--> Tech Stack
 - Python
 - Git for version control
 
