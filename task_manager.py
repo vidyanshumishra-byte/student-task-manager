@@ -1,3 +1,6 @@
+from storage import load_tasks, save_tasks
+
+tasks = load_tasks()
 import json
 
 try:
@@ -51,14 +54,17 @@ while True:
                 print("Invalid task number.")
 
     elif choice == "4":
-        if len(tasks) == 0:
-            print("No tasks available.")
-        else:
-            for i in range(len(tasks)):
+        pending_tasks = []
+        for i in range(len(tasks)):
+            if not tasks[i]["completed"]:
                 print(i + 1, ".", tasks[i]["task"])
+                pending_tasks.append(i)
 
+        if len(pending_tasks) == 0:
+            print("All tasks already completed!")
+        else: 
             num = int(input("Enter task number to mark complete: "))
-            if 1 <= num <= len(tasks):
+            if 1 <= num <= len(tasks) and not tasks[num-1]["completed"]:
                 tasks[num - 1]["completed"] = True
                 save_tasks()
                 print("Task marked as complete!")
