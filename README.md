@@ -1,26 +1,45 @@
 # Student Task Manager
 
-A simple command line based task manager built using Python.
+A Python-based CLI task manager designed to help students stay consistent, track tasks, and avoid last-minute stress.
 
-## Features
+---
+
+## 🚀 Features
 
 - Add tasks
 - Delete tasks
 - Mark tasks as completed
-- Task priority (High / Medium / Low)
-- Tasks stored using JSON
-- Clean CLI interface
+- Task priority system (High / Medium / Low)
+- JSON based data storage
+- Simple CLI interface
 
-## Tech Used
+---
+
+## 🛠 Tech Used
 
 - Python
-- JSON file storage
+- JSON
+- CLI (Command Line Interface)
 
-## Future Improvements
+---
 
-- GUI version using Tkinter
-- Drag and Drop task reorder
-- Due dates
-- Search tasks
-- Dark mode
-  
+## 📦 How to Run
+
+1. Install Python
+2. Clone the repository
+
+git clone https://github.com/vidyanshumishra-byte/student-task-manager.git
+
+3. Run the program
+
+python task_manager.py
+
+---
+
+## ⭐ Future Improvements
+
+- GUI version (Tkinter)
+- Task search
+- Due date system
+- Progress tracking
+- Drag & Drop task reorder
