@@ -1,79 +1,121 @@
-from storage import load_tasks, save_tasks
-
-tasks = load_tasks()
+import tkinter as tk
+from tkinter import messagebox
 import json
 
-try:
-    with open("tasks.json", "r") as file:
-        tasks = json.load(file)
-except:
-    tasks = []
+FILE_NAME = "tasks.json"
 
+# Load tasks
+def load_tasks():
+    try:
+        with open(FILE_NAME, "r") as file:
+            return json.load(file)
+    except:
+        return []
+
+# Save tasks
 def save_tasks():
-    with open("tasks.json", "w") as file:
+    with open(FILE_NAME, "w") as file:
         json.dump(tasks, file)
-def show_menu():
-    print("\n--- Student Task Manager ---")
-    print("1. Add Task")
-    print("2. View Tasks")
-    print("3. Delete Task")
-    print("4. Mark Complete")
-    print("5. Exit")
 
-while True:
-    show_menu()
-    choice = input("Enter your choice: ")
+# Add task
+def add_task():
+    task = entry.get()
 
-    if choice == "1":
-        task = input("Enter task: ")
-        tasks.append({"task": task, "completed": False})
-        save_tasks()
-        print("Task added successfully!")
+    if task == "":
+        messagebox.showwarning("Warning", "Task cannot be empty")
+        return
 
-    elif choice == "2":
-        if len(tasks) == 0:
-            print("No tasks available.")
+    priority = priority_var.get()
+
+    tasks.append({
+        "task": task,
+        "priority": priority,
+        "done": False
+    })
+
+    entry.delete(0, tk.END)
+    save_tasks()
+    show_tasks()
+
+# Show tasks
+def show_tasks():
+    listbox.delete(0, tk.END)
+
+    for i, t in enumerate(tasks):
+
+        if t["priority"] == "High":
+            emoji = "🔴"
+        elif t["priority"] == "Medium":
+            emoji = "🟡"
         else:
-            for i in range(len(tasks)):
-                status = "✓" if tasks[i]["completed"] else "✗"
-                print(i + 1, ".", tasks[i]["task"], "-", status)
+            emoji = "🟢"
 
-    elif choice == "3":
-        if len(tasks) == 0:
-            print("No tasks available.")
-        else:
-            for i in range(len(tasks)):
-                print(i + 1, ".", tasks[i]["task"])
+        status = "✔" if t["done"] else "❌"
 
-            num = int(input("Enter task number to delete: "))
-            if 1 <= num <= len(tasks):
-                tasks.pop(num - 1)
-                save_tasks()
-                print("Task deleted successfully!")
-            else:
-                print("Invalid task number.")
+        text = f"{i+1}. {emoji} {t['task']} [{status}]"
+        listbox.insert(tk.END, text)
 
-    elif choice == "4":
-        pending_tasks = []
-        for i in range(len(tasks)):
-            if not tasks[i]["completed"]:
-                print(i + 1, ".", tasks[i]["task"])
-                pending_tasks.append(i)
+# Delete task
+def delete_task():
+    selected = listbox.curselection()
 
-        if len(pending_tasks) == 0:
-            print("All tasks already completed!")
-        else: 
-            num = int(input("Enter task number to mark complete: "))
-            if 1 <= num <= len(tasks) and not tasks[num-1]["completed"]:
-                tasks[num - 1]["completed"] = True
-                save_tasks()
-                print("Task marked as complete!")
-            else:
-                print("Invalid task number.")
+    if not selected:
+        messagebox.showwarning("Warning", "Select a task first")
+        return
 
-    elif choice == "5":
-        print("Exiting program...")
-        break
+    index = selected[0]
+    tasks.pop(index)
 
-    else:
-        print("Invalid choice. Try again.")
+    save_tasks()
+    show_tasks()
+
+# Mark complete
+def mark_done():
+    selected = listbox.curselection()
+
+    if not selected:
+        messagebox.showwarning("Warning", "Select a task")
+        return
+
+    index = selected[0]
+
+    tasks[index]["done"] = True
+
+    save_tasks()
+    show_tasks()
+
+# GUI
+root = tk.Tk()
+root.title("Student Task Manager")
+root.geometry("400x450")
+
+tasks = load_tasks()
+
+# Task entry
+entry = tk.Entry(root, width=30)
+entry.pack(pady=10)
+
+# Priority dropdown
+priority_var = tk.StringVar()
+priority_var.set("Medium")
+
+priority_menu = tk.OptionMenu(root, priority_var, "High", "Medium", "Low")
+priority_menu.pack()
+
+# Buttons
+add_btn = tk.Button(root, text="Add Task", command=add_task)
+add_btn.pack(pady=5)
+
+done_btn = tk.Button(root, text="Mark Done", command=mark_done)
+done_btn.pack(pady=5)
+
+delete_btn = tk.Button(root, text="Delete Task", command=delete_task)
+delete_btn.pack(pady=5)
+
+# Task list
+listbox = tk.Listbox(root, width=45)
+listbox.pack(pady=10)
+
+show_tasks()
+
+root.mainloop()
