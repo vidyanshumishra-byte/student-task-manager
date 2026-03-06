@@ -1,28 +1,26 @@
 # Student Task Manager
 
-A simple console-based task management system built using Python.
+A simple command line based task manager built using Python.
 
---> Features (Version 1)
+## Features
+
 - Add tasks
-- View tasks
-- Simple menu-driven interface
+- Delete tasks
+- Mark tasks as completed
+- Task priority (High / Medium / Low)
+- Tasks stored using JSON
+- Clean CLI interface
 
---> Tech Stack
+## Tech Used
+
 - Python
-- Git for version control
+- JSON file storage
 
---> Project Status
-Currently in development. Future updates will include:
-- File handling
-- JSON storage
-- Task completion tracking
-- Priority system
+## Future Improvements
 
---> How to Run
-
-```bash
-python task_manager.py
-```
-
---> Learning Goal
-This project is being developed step-by-step to strengthen Python fundamentals and version control skills.
+- GUI version using Tkinter
+- Drag and Drop task reorder
+- Due dates
+- Search tasks
+- Dark mode
+  
